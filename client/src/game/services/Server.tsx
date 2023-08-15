@@ -3,7 +3,7 @@ import { Schema } from "@colyseus/schema";
 import { EventEmitter } from "events";
 
 import { ITicTacToeState } from "@app/types/types";
-import { Message } from "@app/types/enums";
+import { Message, TicTacResults } from "@app/types/enums";
 
 export default class Server {
   private client: Client;
@@ -15,7 +15,7 @@ export default class Server {
   private foundMatch = false;
 
   constructor() {
-    // this.client = new Client('ws://localhost:2567');
+    // this.client = new Client("ws://localhost:8500");
     this.client = new Client("wss://server.tictactoe.blakemasondev.com");
   }
 
@@ -88,13 +88,13 @@ export default class Server {
   getVictor() {
     switch (this.room?.state.victorSessionId) {
       case "": {
-        return "STILL_PLAYING";
+        return TicTacResults.STILL_PLAYING;
       }
       case this.room?.sessionId: {
-        return "YOU_WON";
+        return TicTacResults.YOU_WON;
       }
       default: {
-        return "OPPONENT_WON";
+        return TicTacResults.OPPONENT_WON;
       }
     }
   }

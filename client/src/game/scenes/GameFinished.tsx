@@ -29,9 +29,9 @@ export default class EndMatch extends Phaser.Scene {
     this.againButtonBg = this.add.rectangle(
       width / 2,
       height * 0.85,
-      width * 0.8,
+      width * 0.4,
       height * 0.1,
-      0xffffff
+      0x0a964b
     );
     this.againButtonBg.setInteractive();
     this.againButtonBg.setOrigin(0.5, 0.5);
@@ -42,8 +42,8 @@ export default class EndMatch extends Phaser.Scene {
       height * 0.85,
       "Play Again",
       {
-        color: "#000000",
-        fontFamily: "mono",
+        color: "#fff",
+        fontFamily: "Inter",
         fontSize: "24px",
       }
     );

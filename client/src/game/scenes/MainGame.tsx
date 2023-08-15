@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import Server from "@app/game/services/Server";
 
-import { Cell } from "@app/types/enums";
+import { Cell, TicTacResults } from "@app/types/enums";
 import { ITicTacToeState } from "@app/types/types";
 
 import crossImage from "@app/game/assets/cross.png";
@@ -36,7 +36,7 @@ export default class MainGame extends Phaser.Scene {
   }
 
   private opponentDisconnect = () => {
-    this.infoText.text = ">> Opponent left...";
+    this.infoText.text = "Opponent left...";
 
     this.server?.leave();
     this.scene.pause("main-game");
@@ -50,15 +50,15 @@ export default class MainGame extends Phaser.Scene {
     if (!state) return;
 
     const { width, height } = this.scale;
-    const size = 96;
-    const spacing = 5;
+    const size = 120;
+    const spacing = 8;
 
     let x = width * 0.5 - size - spacing;
-    let y = height * 0.5 - size - spacing;
+    let y = height * 0.4 - size - spacing;
 
     state.board.forEach((cellState, idx) => {
       this.add
-        .rectangle(x, y, size, size, 0xffffff)
+        .rectangle(x, y, size, size, 0x6042b8)
         .setInteractive()
         .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
           this.server?.makeSelection(idx);
@@ -78,17 +78,18 @@ export default class MainGame extends Phaser.Scene {
   };
 
   private createGui = () => {
-    this.infoText = this.add.text(20, this.scale.height - 20, ">> your turn", {
-      fontFamily: "mono",
+    this.infoText = this.add.text(20, this.scale.height - 20, "Your turn", {
+      fontFamily: "Inter",
       fontSize: "20px",
+      color: "#0A964B",
     });
     this.infoText.setOrigin(0, 1);
 
     if (this.server?.isMyTurn()) {
-      this.infoText.text = ">> your turn player " + this.server.getMyMarker();
+      this.infoText.text = "Your turn player " + this.server.getMyMarker();
     } else {
       this.infoText.text =
-        ">> player " + this.server?.getOthersMarker() + "'s turn";
+        "Player " + this.server?.getOthersMarker() + "'s turn";
     }
   };
 
@@ -115,22 +116,21 @@ export default class MainGame extends Phaser.Scene {
 
   private updateGui = (state: ITicTacToeState) => {
     if (this.server?.isMyTurn()) {
-      this.infoText.text = ">> your turn player " + this.server.getMyMarker();
+      this.infoText.text = "Your turn player " + this.server.getMyMarker();
     } else {
       this.infoText.text =
-        ">> player " + this.server?.getOthersMarker() + "'s turn";
+        "Player " + this.server?.getOthersMarker() + "'s turn";
     }
   };
 
   private updateVictory = (state: ITicTacToeState) => {
-    // check if someone won
     const victor = this.server?.getVictor();
-    if (victor === "STILL_PLAYING") return;
+    if (victor === TicTacResults.STILL_PLAYING) return;
 
-    if (victor === "YOU_WON") {
-      this.infoText.text = ">> You won!";
-    } else if (victor === "OPPONENT_WON") {
-      this.infoText.text = ">> Opponent won...";
+    if (victor === TicTacResults.YOU_WON) {
+      this.infoText.text = "You won!";
+    } else if (victor === TicTacResults.OPPONENT_WON) {
+      this.infoText.text = "Opponent won...";
     }
 
     this.server?.leave();

@@ -27,9 +27,9 @@ export default class FindMatch extends Phaser.Scene {
     this.findButtonBg = this.add.rectangle(
       width / 2,
       height * 0.85,
-      width * 0.8,
+      width * 0.4,
       height * 0.1,
-      0xffffff
+      0x0a964b
     );
     this.findButtonBg.setInteractive();
     this.findButtonBg.setOrigin(0.5, 0.5);
@@ -40,8 +40,8 @@ export default class FindMatch extends Phaser.Scene {
       height * 0.85,
       "Find Match",
       {
-        color: "#000000",
-        fontFamily: "mono",
+        color: "#fff",
+        fontFamily: "Inter",
         fontSize: "24px",
       }
     );
