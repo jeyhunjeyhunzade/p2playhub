@@ -2,7 +2,7 @@ import Main from "./Main";
 
 const App = () => {
   return (
-    <div className="flex h-[100vh] overflow-hidden">
+    <div>
       <Main />
     </div>
   );
