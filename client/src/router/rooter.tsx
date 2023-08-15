@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "@app/pages/App";
+import TicTac from "@app/pages/Tictac";
 import RouterErrorPage from "@app/router/RouterErrorPage";
 
 export enum Routes {
@@ -28,10 +29,10 @@ export const router = createBrowserRouter([
     ),
     errorElement: <RouterErrorPage />,
   },
-  // {
-  //   path: Routes.tictac,
-  //   element: ,
-  // },
+  {
+    path: Routes.tictac,
+    element: <TicTac />,
+  },
   // {
   //   path: Routes.chess,
   //   element: ,
