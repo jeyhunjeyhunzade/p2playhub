@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "@app/pages/App";
 import TicTac from "@app/pages/Tictac";
 import RouterErrorPage from "@app/router/RouterErrorPage";
+import Chess from "@app/pages/Chess";
 
 export enum Routes {
   main = "/",
@@ -33,8 +34,8 @@ export const router = createBrowserRouter([
     path: Routes.tictac,
     element: <TicTac />,
   },
-  // {
-  //   path: Routes.chess,
-  //   element: ,
-  // },
+  {
+    path: Routes.chess,
+    element: <Chess />,
+  },
 ]);
