@@ -11,7 +11,7 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "colyseus.js": "^0.15.11",
+    "colyseus.js": "0.14.13",
     "eslint-plugin-simple-import-sort": "^9.0.0",
     "events": "^3.3.0",
     "phaser": "^3.60.0",
