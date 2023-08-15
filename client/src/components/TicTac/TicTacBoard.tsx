@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import GameFinished from "@app/game/scenes/GameFinished";
 import FindMatch from "@app/game/scenes/FindMatch";
 import MainGame from "@app/game/scenes/MainGame";
-import GameTitle from "@app/game/scenes/GameTitle";
 
 const TicTacBoard = () => {
   const gameInitialised = useRef(false);
@@ -13,9 +12,10 @@ const TicTacBoard = () => {
     const gameConfig = {
       type: Phaser.CANVAS,
       parent: "phaser-game",
-      width: 360,
-      height: 640,
-      scene: [GameTitle, FindMatch, MainGame, GameFinished],
+      width: 540,
+      height: 540,
+      backgroundColor: "#fff",
+      scene: [FindMatch, MainGame, GameFinished],
     };
 
     new Phaser.Game(gameConfig);
