@@ -13,3 +13,9 @@ export enum TicTacResults {
   YOU_WON = "YOU_WON",
   OPPONENT_WON = "OPPONENT_WON",
 }
+
+export enum AppRoutes {
+  main = "/",
+  tictac = "/tictac",
+  chess = "/chess",
+}

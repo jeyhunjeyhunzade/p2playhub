@@ -1,5 +1,5 @@
 import BrandLogo from "@app/assets/p2pPlayHub copy.svg";
-import { Routes } from "@app/router/rooter";
+import { AppRoutes } from "@app/types/enums";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ const Main = () => {
     if (!name) {
       toast.error("Please enter a name");
     } else {
-      navigate(Routes.tictac);
+      navigate(AppRoutes.tictac);
     }
   };
 
@@ -24,7 +24,7 @@ const Main = () => {
     if (!name) {
       toast.error("Please enter a name");
     } else {
-      navigate(Routes.chess);
+      navigate(AppRoutes.chess);
     }
   };
 
