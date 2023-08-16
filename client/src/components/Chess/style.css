@@ -1,0 +1,160 @@
+* {
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+body {
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.MainInput__container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+input {
+    padding: 10px 14px;
+    outline: none;
+    border: 1px solid grey;
+    font-size: 1rem;
+}
+
+input:focus {
+    outline: 2px solid #27ae60;
+    border: 1px solid transparent;
+}
+
+button {
+    padding: 10px 14px;
+    font-size: 1rem;
+    background-color: #27ae60;
+    border: 0;
+    color: white;
+    transition: all 0.1s ease-in;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+button:hover {
+    background-color: #259f58;
+}
+
+button:active {
+    background-color: #2ecc71;
+}
+
+.MainChess__container {
+    display: grid;
+    place-items: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    text-transform: capitalize;
+}
+
+.MainChess__inside {
+    padding:15px;
+}
+
+.MainChess__container > div> .MainChess__you , .MainChess__other {
+    padding:10px 15px;
+    font-weight: bold;
+    background-color: #ecf0f1;  
+}
+
+.MainChess__container > div > .MainChess__turn {
+    padding:10px 15px;
+    font-weight: bold;
+    color: white; 
+}
+
+.myTurn {
+    background-color:#27ae60 ;
+}
+
+.otherTurn {
+    background-color: #c0392b;
+}
+
+i {
+    color: #2ecc71;
+}
+
+.userlist {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+ul {
+    list-style: none;
+    width: 300px;
+}
+
+li {
+    padding: 10px;
+    text-align: center;
+    font-weight: bolder;
+    text-transform: capitalize;
+    border-bottom: 2px solid lightgrey;
+}
+li:nth-child(2) {
+    border:0;
+}
+    
+li.first {
+    background-color:#8e44ad;
+    font-weight: bold;
+    border-radius: 20px;
+    color: white;
+    text-transform: capitalize;
+    text-align: center;
+}
+li.second {
+    background-color: #502662;
+    color:white;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+/* spinner */
+.lds-hourglass {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-hourglass:after {
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    width: 0;
+    height: 0;
+    margin: 8px;
+    box-sizing: border-box;
+    border: 32px solid #fff;
+    border-color: #2ecc71 transparent #2ecc71 transparent;
+    animation: lds-hourglass 1.2s infinite;
+  }
+  @keyframes lds-hourglass {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    50% {
+      transform: rotate(900deg);
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    100% {
+      transform: rotate(1800deg);
+    }
+  }
+  /* spinner------------------------ */
