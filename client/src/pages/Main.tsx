@@ -15,7 +15,6 @@ const Main = () => {
   ) as AppContextShape;
 
   useEffect(() => {
-    // error handle on any type in server
     socket.on("connect_error", (err) => {
       if (err.message === "username exist") {
         swal({

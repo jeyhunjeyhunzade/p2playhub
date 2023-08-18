@@ -1,17 +1,26 @@
-//@ts-nocheck
 import { useState, useEffect } from "react";
 import Spinner from "./Spinner";
 import { Chess } from "chess.js";
 import Chessboard from "chessboardjsx";
 import { checkGameOverState } from "@app/utils/index";
+import { Socket } from "socket.io-client";
+import { OnDrop } from "@app/types/types";
+import { ChessOrientation } from "@app/types/enums";
 
 const game = new Chess();
 
-const MainChess = ({ socket, username }) => {
+interface MainChessProps {
+  socket: Socket;
+  username: string;
+}
+
+const MainChess = ({ socket, username }: MainChessProps) => {
   const [fen, setFen] = useState("start");
   const [play, setPlay] = useState(false);
-  const [orientation, setOrientation] = useState("white");
-  const [otherusername, setOtherusername] = useState("");
+  const [orientation, setOrientation] = useState<ChessOrientation>(
+    ChessOrientation.WHITE
+  );
+  const [opponent, setOpponent] = useState("");
   const [otherid, setOtherid] = useState("");
   const [turn, setTurn] = useState("w");
   const [width, setWidth] = useState(0);
@@ -21,8 +30,12 @@ const MainChess = ({ socket, username }) => {
     socket.on("join", (res) => {
       setPlay(true);
       setTurn(res["white"] === socket.id ? "w" : "b");
-      setOrientation(res["black"] === socket.id ? "black" : "white");
-      setOtherusername(
+      setOrientation(
+        res[ChessOrientation.BLACK] === socket.id
+          ? ChessOrientation.BLACK
+          : ChessOrientation.WHITE
+      );
+      setOpponent(
         res["white"] === socket.id ? res["blackUsername"] : res["whiteUsername"]
       );
       setOtherid(res["white"] === socket.id ? res["black"] : res["white"]);
@@ -48,7 +61,7 @@ const MainChess = ({ socket, username }) => {
     };
   }, []);
 
-  const onDrop = ({ sourceSquare, targetSquare }) => {
+  const onDrop = ({ sourceSquare, targetSquare }: OnDrop) => {
     if (game.turn() !== turn) {
       return;
     }
@@ -64,12 +77,18 @@ const MainChess = ({ socket, username }) => {
     socket.emit("move", { sourceSquare, targetSquare, userturn, otherid });
   };
 
-  const changeWidth = ({ screenWidth }) => {
+  const changeWidth = ({
+    screenWidth,
+  }: {
+    screenWidth: number;
+    screenHeight: number;
+  }) => {
     if (screenWidth > 600) {
       setWidth(480);
-      return;
+      return 480;
     }
     setWidth(screenWidth - 30);
+    return screenWidth - 30;
   };
 
   return (
@@ -91,7 +110,7 @@ const MainChess = ({ socket, username }) => {
               : overmessage}
           </div>
           <div className="username-box mt-2 flex h-[68px] w-full items-center justify-center rounded-t-md">
-            Opponent - {otherusername}
+            Opponent - {opponent}
           </div>
           <Chessboard
             position={fen}
