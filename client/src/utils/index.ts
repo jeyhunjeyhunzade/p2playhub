@@ -5,7 +5,6 @@ export const classNames = (...classes: Array<string | null>) => {
 };
 
 export const checkGameOverState = (game: any) => {
-  console.log("game: ", game);
   if (game.game_over()) {
     if (game.in_draw()) {
       swal({ title: "Its a draw", icon: "info" });
