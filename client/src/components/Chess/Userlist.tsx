@@ -1,17 +1,23 @@
 //@ts-nocheck
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import MainChess from "./MainChess";
 import swal from "sweetalert";
-import "./style.css";
 
-const Userlist = ({ socket, username }) => {
+import { socket } from "@app/api/socket";
+import { AppContext } from "@app/pages/App";
+import { AppContextShape } from "@app/types/types";
+
+const Userlist = () => {
   const [start, setStart] = useState(false);
   const [users, setUsers] = useState([]);
+  const [oppenent, setOppenent] = useState();
+  const { userName } = useContext(AppContext) as AppContextShape;
+
   useEffect(() => {
     socket.emit("getList", "get");
   }, []);
+
   useEffect(() => {
-    // get the list of users connected to the socket except the current user
     socket.on("list", (res) => {
       const user = [];
       for (var key of Object.keys(res)) {
@@ -49,18 +55,44 @@ const Userlist = ({ socket, username }) => {
     };
   }, []);
 
+  useEffect(() => {
+    users &&
+      users.map((user) => {
+        setOppenent(user);
+      });
+  }, [users]);
+
   const startGame = (id) => {
     socket.emit("create", id);
     setStart(true);
   };
 
   return (
-    <>
+    <div className="flex h-[100vh] h-[100vh] flex-col items-center justify-center">
       {!start ? (
-        <div className="userlist">
-          <ul>
+        <div className="flex h-[100vh] flex-col items-center justify-center">
+          <div className="flex flex-col">
+            <div className="username-box flex h-[84px] w-[440px] items-center justify-center">
+              You - {userName}
+            </div>
+            <div className="custom-vs my-4">VS</div>
+            <div className="username-box flex h-[84px] w-[440px] items-center justify-center">
+              Opponent - {oppenent?.username}
+            </div>
+          </div>
+          <div className="mt-10">
+            {oppenent && (
+              <button
+                className="custom-button custom-button-green ml-2"
+                onClick={() => startGame(oppenent.id)}
+              >
+                Play
+              </button>
+            )}
+          </div>
+          {/* <ul>
             <li className="first">Your username</li>
-            <li>{username} &#x2654;</li>
+            <li>{userName} &#x2654;</li>
             <li className="second">Other players</li>
             {users &&
               users.map((value, index) => (
@@ -76,12 +108,12 @@ const Userlist = ({ socket, username }) => {
                   }
                 </li>
               ))}
-          </ul>
+          </ul> */}
         </div>
       ) : (
-        <MainChess username={username} socket={socket} />
+        <MainChess username={userName} socket={socket} />
       )}
-    </>
+    </div>
   );
 };
 

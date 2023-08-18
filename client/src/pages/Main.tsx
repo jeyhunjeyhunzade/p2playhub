@@ -1,19 +1,49 @@
 import BrandLogo from "@app/assets/p2pPlayHub copy.svg";
 import { AppRoutes } from "@app/types/enums";
-import { useState } from "react";
+import swal from "sweetalert";
+import { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "./App";
+import { AppContextShape } from "@app/types/types";
+import { socket } from "@app/api/socket";
 
 const Main = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
+  const { userName, setUserName, setIsRoomActive } = useContext(
+    AppContext
+  ) as AppContextShape;
 
-  if (!name) {
-    console.log("No name");
-  }
+  useEffect(() => {
+    // error handle on any type in server
+    socket.on("connect_error", (err) => {
+      if (err.message === "username exist") {
+        swal({
+          title: "Could not connect, Username already exists",
+          icon: "error",
+        });
+      } else {
+        swal({
+          title: "Couldn't connect, please try again",
+          icon: "error",
+        });
+      }
+      setUserName("");
+      console.log(err.message, "so disconnected");
+      socket.disconnect();
+    });
+    socket.on("connect", () => {
+      console.log("iam connected");
+      setIsRoomActive(true);
+    });
+    return () => {
+      socket.off("connect_error");
+      socket.off("connect");
+    };
+  }, []);
 
   const navigateToTicTac = () => {
-    if (!name) {
+    if (!userName) {
       toast.error("Please enter a name");
     } else {
       navigate(AppRoutes.tictac);
@@ -21,9 +51,12 @@ const Main = () => {
   };
 
   const navigateToChess = () => {
-    if (!name) {
+    if (!userName) {
       toast.error("Please enter a name");
     } else {
+      console.log("userName: ", userName);
+      socket.auth = { username: userName };
+      socket.connect();
       navigate(AppRoutes.chess);
     }
   };
@@ -40,8 +73,9 @@ const Main = () => {
             className="block w-[362px] rounded-lg border border-gray-300 bg-transparent p-2.5 text-sm text-white placeholder-white focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-white dark:focus:border-red-500 dark:focus:ring-red-500"
             placeholder="Your name:"
             required
+            value={userName}
             onChange={(e) => {
-              setName(e.target.value);
+              setUserName(e.target.value);
             }}
           />
         </div>

@@ -18,9 +18,6 @@ const MainChess = ({ socket, username }) => {
   const [overmessage, setOvermessage] = useState("");
 
   useEffect(() => {
-    // when the invited user joins the game,
-    // both the user gets to play
-    console.log("socket??", socket);
     socket.on("join", (res) => {
       setPlay(true);
       setTurn(res["white"] === socket.id ? "w" : "b");
@@ -36,7 +33,6 @@ const MainChess = ({ socket, username }) => {
   }, []);
 
   useEffect(() => {
-    // when a user moves, it is sent back to the other user
     socket.on("move", ({ sourceSquare, targetSquare }) => {
       let move = game.move({
         from: sourceSquare,
@@ -56,15 +52,12 @@ const MainChess = ({ socket, username }) => {
     if (game.turn() !== turn) {
       return;
     }
-    // see if the move is legal
     let move = game.move({
       from: sourceSquare,
       to: targetSquare,
       promotion: "q",
     });
     if (move === null) return;
-    // check if the game is over, what is the state of it
-    // either it is a win, stalemate or other.
     checkGameOverState(game);
     setFen(game.fen());
     let userturn = game.turn();
@@ -86,21 +79,19 @@ const MainChess = ({ socket, username }) => {
       ) : (
         <div className="MainChess__inside">
           <div
-            className={`MainChess__turn ${
-              turn === game.turn() ? "myTurn" : "otherTurn"
+            className={`flex h-[48px] w-full items-center justify-center rounded-lg text-base font-semibold text-white ${
+              turn === game.turn() ? "bg-[#0A964B]" : "bg-[#960A0A;]"
             }`}
             style={{ textAlign: "center" }}
           >
             {overmessage === ""
               ? game.turn() === "w"
-                ? "whites turn"
-                : "blacks turn"
+                ? "Whites turn"
+                : "Blacks turn"
               : overmessage}
           </div>
-          <div className="MainChess__other">
-            <i className="fas fa-circle"></i>
-            &nbsp;
-            {otherusername}
+          <div className="username-box mt-2 flex h-[68px] w-full items-center justify-center rounded-t-md">
+            Opponent - {otherusername}
           </div>
           <Chessboard
             position={fen}
@@ -109,9 +100,8 @@ const MainChess = ({ socket, username }) => {
             orientation={orientation}
             onDrop={onDrop}
           />
-          <div className="MainChess__you">
-            <i className="fas fa-circle"></i> &nbsp;
-            {username}
+          <div className="username-box flex h-[68px] w-full items-center justify-center rounded-b-md">
+            You - {username}
           </div>
         </div>
       )}
