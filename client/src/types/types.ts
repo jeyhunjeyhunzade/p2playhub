@@ -1,3 +1,5 @@
+import { Square } from "chess.js";
+
 export interface ITicTacToeState {
   board: number[];
   activePlayer: number;
@@ -15,8 +17,8 @@ export interface AppContextShape {
 }
 
 export interface OnDrop {
-  sourceSquare: string;
-  targetSquare: string;
+  sourceSquare: Square;
+  targetSquare: Square;
 }
 
 export interface ChessUser {
