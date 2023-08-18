@@ -13,8 +13,6 @@ import Main from "./Main";
 import TicTac from "./Tictac";
 import Chess from "./Chess";
 
-const socket = io("http://localhost:8000", { autoConnect: false });
-
 const PrivateRoute = ({ user }: any) => {
   return user ? <Outlet /> : <Navigate to={AppRoutes.chess} />;
 };
