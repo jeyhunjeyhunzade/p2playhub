@@ -13,3 +13,13 @@ export interface AppContextShape {
   isRoomActive: boolean;
   setIsRoomActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+export interface OnDrop {
+  sourceSquare: string;
+  targetSquare: string;
+}
+
+export interface ChessUser {
+  id: string;
+  username: string;
+}

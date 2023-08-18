@@ -1,16 +1,15 @@
-//@ts-nocheck
 import { useState, useEffect, useContext } from "react";
 import MainChess from "./MainChess";
 import swal from "sweetalert";
 
 import { socket } from "@app/api/socket";
 import { AppContext } from "@app/pages/App";
-import { AppContextShape } from "@app/types/types";
+import { AppContextShape, ChessUser } from "@app/types/types";
 
 const Userlist = () => {
   const [start, setStart] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [oppenent, setOppenent] = useState();
+  const [users, setUsers] = useState<ChessUser[]>([]);
+  const [oppenent, setOppenent] = useState<ChessUser>();
   const { userName } = useContext(AppContext) as AppContextShape;
 
   useEffect(() => {
@@ -19,7 +18,7 @@ const Userlist = () => {
 
   useEffect(() => {
     socket.on("list", (res) => {
-      const user = [];
+      const user: ChessUser[] = [];
       for (var key of Object.keys(res)) {
         if (key !== socket.id) {
           let data = {
@@ -29,6 +28,7 @@ const Userlist = () => {
           user.push(data);
         }
       }
+      console.log("user: ", user);
       setUsers(user);
     });
     return () => {
@@ -41,7 +41,7 @@ const Userlist = () => {
       swal({
         title: `You are being challenge by ${username}`,
         icon: "warning",
-        button: "join",
+        buttons: ["Cancel", "Join"],
       }).then((isConfirmed) => {
         if (isConfirmed) {
           let myid = socket.id;
@@ -62,7 +62,7 @@ const Userlist = () => {
       });
   }, [users]);
 
-  const startGame = (id) => {
+  const startGame = (id: string) => {
     socket.emit("create", id);
     setStart(true);
   };
@@ -90,25 +90,6 @@ const Userlist = () => {
               </button>
             )}
           </div>
-          {/* <ul>
-            <li className="first">Your username</li>
-            <li>{userName} &#x2654;</li>
-            <li className="second">Other players</li>
-            {users &&
-              users.map((value, index) => (
-                <li key={index}>
-                  {value.username}{" "}
-                  {
-                    <button
-                      style={{ borderRadius: "20px" }}
-                      onClick={() => startGame(value.id)}
-                    >
-                      play&#x2654;
-                    </button>
-                  }
-                </li>
-              ))}
-          </ul> */}
         </div>
       ) : (
         <MainChess username={userName} socket={socket} />

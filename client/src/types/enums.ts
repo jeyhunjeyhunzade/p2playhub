@@ -19,3 +19,8 @@ export enum AppRoutes {
   tictac = "/tictac",
   chess = "/chess",
 }
+
+export enum ChessOrientation {
+  WHITE = "white",
+  BLACK = "black",
+}
